@@ -125,3 +125,66 @@ def sum(a,b,c):
     print(getframeinfo(currentframe()).lineno," : ","Sum calculated!")
     return result
 print(getframeinfo(currentframe()).lineno," : ",sum(1,2,3))
+
+print("==========================GENERATORS==========================")
+# simple counter generator
+def counter(n):
+    count=n
+    while count>0:
+        yield count
+        count-=1
+    return
+def fruit():
+    yield "apple"
+    yield "banana"
+    yield "orange"
+    yield "grapes"
+    yield "peach"
+    yield "watermelon"
+def gen_example():
+    print(getframeinfo(currentframe()).lineno," : ","Generator started!")
+    yield "Value"
+for i in counter(10):
+    print(getframeinfo(currentframe()).lineno," : ",i)
+for f in fruit():
+    print(getframeinfo(currentframe()).lineno," : ",f)
+# generator call doesn't call its body logic
+generator=gen_example()
+print(getframeinfo(currentframe()).lineno," : ","After generator call!")
+# first __next()__ call starts execution of generator body
+print(getframeinfo(currentframe()).lineno," : ",generator.__next__())
+
+print("==========================COROUTINES==========================")
+def containes(pattern):
+    print(getframeinfo(currentframe()).lineno," : ","Pattern to look for: ",pattern)
+    try:
+        while True:
+            phrase_to_search=(yield)
+            if(pattern in phrase_to_search):
+                print(getframeinfo(currentframe()).lineno," : ",phrase_to_search," containes key:",pattern,"!")
+            else:
+                print(getframeinfo(currentframe()).lineno," : ",phrase_to_search," doesn't containe key:",pattern,"!")
+    except GeneratorExit:
+        print(getframeinfo(currentframe()).lineno," : ","Stopping generator!")
+coroutine=containes("haha")
+coroutine.__next__()
+coroutine.send("That's funny hahaha!")
+coroutine.send("That's not funny!")
+coroutine.close()
+
+print("=============================MISC=============================")
+def double(x):
+    return x*2
+numbers=[1,2,3,4,5]
+odd_doubles=[double(x) for x in numbers if x%2!=0]
+for i in odd_doubles:
+    print(getframeinfo(currentframe()).lineno," : ",i)
+letters=["a","b","c","d","e"]
+# equivalent to
+# list=[]
+# for x in numbers:
+#   for y in letters:
+#       return list.append((x,y))
+tuples=[(x,y) for x in numbers for y in letters]
+for tuple in tuples:
+    print(getframeinfo(currentframe()).lineno," : ",tuple)
