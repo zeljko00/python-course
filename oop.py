@@ -1,7 +1,9 @@
 class Test_class:
     class_prop=0
-    def __init__(self, value):
-        self.id=value
+    def __init__(self,id, value):
+        # leading underscore in attribute name is convention for attributes intended to be private
+        self._id=id
+        self.value=value
         Test_class.class_prop+=1
     def method(self):
         print("Test_class method call!")
@@ -22,10 +24,10 @@ class Test_class:
         print("Accessing class method from method via object reference ->")
         self.helper_class_method()
 
-        print("Accessing object's attribute from method ->",self.id)
+        print("Accessing object's attribute from method ->",self.value)
         # accessing object attribute via class name is not possible,
         # because object attribute is connected to specific class instance (object)
-        # print("Accessing object's attribute from method via class name ->",Test_class.id)
+        # print("Accessing object's attribute from method via class name ->",Test_class.value)
 
         print("Accessing object's method from another method ->")
         self.helper_method()
@@ -59,13 +61,13 @@ class Test_class:
         # self.helper_static_method()
         # print("Accessing class method from static method via object reference ->")
         # self.helper_class_method()
-        # print("Accessing object's attribute from static method ->", self.id)
+        # print("Accessing object's attribute from static method ->", self.value)
         # print("Accessing object' method from static method")
         # self.helper_method()
         # print("Accessing object's property from static method ->", self.helper_prop)
 
         # accessing object's attributes, properties and methods via class name is not possible from anywhere
-        # print("Accessing object's attribute from static method ->", Test_class.id)
+        # print("Accessing object's attribute from static method ->", Test_class.value)
         # print("Accessing object' method from static method")
         # Test_class.helper_method()
 
@@ -94,13 +96,13 @@ class Test_class:
         # self.helper_static_method()
         # print("Accessing class method from another class method via object reference ->")
         # self.helper_class_method()
-        # print("Accessing object's attribute from class method ->", self.id)
+        # print("Accessing object's attribute from class method ->", self.value)
         # print("Accessing object' method from class method")
         # self.helper_method()
         # print("Accessing object's property from class method ->", self.helper_prop)
 
         # accessing object's attributes, properties and methods via class name is not possible from anywhere
-        # print("Accessing object's attribute from class method ->", Test_class.id)
+        # print("Accessing object's attribute from class method ->", Test_class.value)
         # print("Accessing object' method from class method")
         # Test_class.helper_method()
 
@@ -131,10 +133,10 @@ class Test_class:
         print("Accessing class method from property via object reference ->")
         self.helper_class_method()
 
-        print("Accessing object's attribute from property ->", self.id)
+        print("Accessing object's attribute from property ->", self.value)
         # accessing object attribute via class name is not possible,
         # because object attribute is connected to specific class instance (object)
-        # print("Accessing object's attribute from property via class name ->", Test_class.id)
+        # print("Accessing object's attribute from property via class name ->", Test_class.value)
 
         print("Accessing object's method from property ->")
         self.helper_method()
@@ -151,10 +153,24 @@ class Test_class:
 
     @property
     def helper_prop(self):
-        print("Test_class helper property call")
-        return "#"+str(self.id)
+        print("Test_class helper property call!")
+        return "#"+str(self.value)
 
-test_object=Test_class(13)
+    @property
+    def id(self):
+        print("Test_class id property call!")
+        return self._id
+    # setter must have same name as corresponding property
+    @id.setter
+    def id(self,value):
+        print("Test_class id setter call!")
+        self._id=value
+
+# specifying str(object) behavior, equivalent to toString() method in Java
+    def __str__(self):
+        return str(self._id)+": value="+str(self.value)
+
+test_object=Test_class(13,"VALUE")
 Test_class.static_method()
 # accessing static method via object reference is not recommended
 test_object.static_method()
@@ -164,12 +180,23 @@ test_object.class_method()
 print(Test_class.class_prop)
 # accessing class attribute via object reference is not recommended
 print(test_object.class_prop)
-print(test_object.id)
+print(test_object.value)
 # accessing object attribute via class name is not possible
-# print(Test_class.id)
+# print(Test_class.value)
 test_object.method()
 # accessing method via class name is not possible
 # Test_class.method()
 print(test_object.prop)
-# accessing object property via class name is not possible
-print(Test_class.prop)
+print(test_object.id)
+# using setter method
+test_object.id=113
+print(test_object.id)
+
+# object is implemented as dictionary
+print(test_object.__dict__)
+# object is connected with its class via __class__ attribute
+print(test_object.__class__)
+# class is also implemented as dictionary
+print(test_object.__class__.__bases__)
+
+print(isinstance(test_object,object))
