@@ -170,6 +170,27 @@ class Test_class:
     def __str__(self):
         return str(self._id)+": value="+str(self.value)
 
+from abc import ABCMeta, abstractmethod,abstractproperty
+class Abstract_class:
+    __metaclass__=ABCMeta
+    @abstractmethod
+    def f(self, arg):
+        pass
+    @abstractproperty
+    def prop(self,velue):
+        pass
+class A(Abstract_class):
+    def f(self, arg):
+        print(arg)
+    def prop(self,value):
+        print(value)
+
+
+
+
+
+
+
 test_object=Test_class(13,"VALUE")
 Test_class.static_method()
 # accessing static method via object reference is not recommended
@@ -199,4 +220,9 @@ print(test_object.__class__)
 # class is also implemented as dictionary
 print(test_object.__class__.__bases__)
 
+a=A()
+print(a.prop)
+
 print(isinstance(test_object,object))
+
+
