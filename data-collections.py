@@ -17,6 +17,17 @@ list.append(False)
 # error: list[4]=15 - cant add elements this way
 print(str(getframeinfo(currentframe()).lineno),": ",list)
 
+# slicing list returns shallow copy of list
+list_slice=list[1:3]
+print(getframeinfo(currentframe()).lineno,": ",list_slice)
+list_slice[1]="NEW VALUE"
+print(getframeinfo(currentframe()).lineno,": ",list)
+print(getframeinfo(currentframe()).lineno,": ",list_slice)
+list[1:3]=["VALUE2","VALUE2"]
+print(getframeinfo(currentframe()).lineno,": ",list)
+print(getframeinfo(currentframe()).lineno,": ",list_slice)
+
+
 # tuple:
 # more efficient implementation of list
 # immutable collection - fixed length
