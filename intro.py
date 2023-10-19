@@ -100,6 +100,12 @@ list3[0][1]=22
 print(str(getframeinfo(currentframe()).lineno),": ",list3)
 print(str(getframeinfo(currentframe()).lineno),": ",list4)
 
+string_var="How are "
+# auto string literal concatenation
+print("How are "
+      "you?")
+# doesn't work with string vars
+# print(string_var "you?")
 
 print("===========================VARIABLES==========================")
 a=1

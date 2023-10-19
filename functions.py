@@ -1,10 +1,26 @@
 import time,math
 from inspect import currentframe, getframeinfo
 print("===========================FUNCTIONS==========================")
+# global variables and variables of enclosing functions cannot be directly assigned a value within a function
+# (unless, for global variables, named in a global statement, or, for variables of enclosing functions,
+# named in a nonlocal statement), although they may be referenced
+
 # optional arguments - can appear only at the end of args list
 def func1(first_arg, optional_arg=10):
     print(getframeinfo(currentframe()).lineno," : ",first_arg)
     print(getframeinfo(currentframe()).lineno," : ",optional_arg)
+
+# warning: default value is evaluated only once - this makes a difference when the default
+# is a mutable object (list, dictionary, instance of most classes, ...)
+# for example, the following function, if called without specifying value for list argument,
+# accumulates the element arguments passed to it on subsequent calls:
+def append(element,list=[]):
+    list.append(element)
+    return list
+print(getframeinfo(currentframe()).lineno," : ",append("element1"))
+print(getframeinfo(currentframe()).lineno," : ",append("element2"))
+
+
 
 # variable number of args - tuple
 # args is a tuple
