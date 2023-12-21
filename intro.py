@@ -118,4 +118,3 @@ def global_var():
     a=3
 global_var()
 print(getframeinfo(currentframe()).lineno," : ",a)
-
